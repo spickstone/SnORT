@@ -17,18 +17,16 @@ namespace net.Utility.SnORT
 
 		public static void Main (string[] args)
 		{
-			SnORT p = new SnORT();
-
 			if (!Directory.Exists (Root)) {
 
 				throw new InvalidOperationException (String.Format("Could not locate NAS root: [{0}] ensure NAS is accessible and drive is mapped", Root));
 			}
 
-			p.sortfiles (Source);
+			Sortfiles (Source);
 			Console.WriteLine ("EOP");
 		}
 
-		private void sortfiles(String path)
+		private static void Sortfiles(String path)
 		{
 			DirectoryInfo folder = new DirectoryInfo(path);
 			List<FileSystemInfo> listOfFiles = new List<FileSystemInfo> ();
@@ -36,14 +34,27 @@ namespace net.Utility.SnORT
 			listOfFiles.ForEach(Match);
 		}
 
-		private void moveFile(String path, String filename, String series, String season)
+		private static void Move(Episode episode)
 		{
+			String target = String.Format (@"{0}/{1}/Season {2}/", Root, episode.Series, episode.Season);
+			String destination = String.Format (@"{0}/{1}", target, episode.FileSystemInfo.Name);
+
+			if(!System.IO.Directory.Exists(target))
+				System.IO.Directory.CreateDirectory (target);
+
+			System.IO.File.Copy (episode.FileSystemInfo.FullName, destination);
+			Console.WriteLine (episode);
 		}
 
 
 		private static void Match(FileSystemInfo fsi)
 		{
-			if ((fsi.Attributes & FileAttributes.Directory) != FileAttributes.Directory )
+			// If 'folder' then sort that directory too!
+			if ((fsi.Attributes & FileAttributes.Directory) == FileAttributes.Directory) 
+			{
+				Sortfiles (fsi.FullName);
+			}
+			else
 			{
 				if (Regex.IsMatch (fsi.Name, regexSeriesSeasonEpisode))
 				{
@@ -53,11 +64,8 @@ namespace net.Utility.SnORT
 					string filename = fsi.Name;
 					string series = m.Groups[1].Captures[0].Value;
 					Int32 season = Int32.Parse( m.Groups [2].Captures [0].Value);
-					Episode ep = new Episode (filename, series, season);
-					Console.WriteLine (ep);
-					/*
-					movefile(ep, path);
-					*/
+					Episode ep = new Episode (fsi, series, season);
+					Move (ep);
 				}
 			}
 		}

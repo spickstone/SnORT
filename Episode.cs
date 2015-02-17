@@ -1,16 +1,17 @@
 ﻿using System;
+using System.IO;
 
 namespace net.Utility.SnORT
 {
 	public class Episode
 	{
-		public String Filename { get; set; }
+		public FileSystemInfo FileSystemInfo { get; set; }
 		public String Series { get; set; }
 		public Int32 Season { get; set; }
 
-		public Episode (String filename, String series, Int32 season)
+		public Episode (FileSystemInfo fileSystemInfo, String series, Int32 season)
 		{
-			Filename = filename;
+			FileSystemInfo = fileSystemInfo;
 			Series = series;
 			Season = season;
 		}
