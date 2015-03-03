@@ -39,6 +39,7 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 *.gpState
+*.userprefs
 
 # Tooling
 _ReSharper*/
