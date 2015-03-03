@@ -42,7 +42,8 @@ namespace net.Utility.SnORT
 			if(!System.IO.Directory.Exists(target))
 				System.IO.Directory.CreateDirectory (target);
 
-			System.IO.File.Copy (episode.FileSystemInfo.FullName, destination);
+
+			episode.Copy (destination);
 			Console.WriteLine (episode);
 		}
 
