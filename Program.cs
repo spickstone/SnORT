@@ -11,7 +11,7 @@ namespace net.Utility.SnORT
 	/// </summary>
 	public class SnORT
 	{
-		private static string regexSeriesSeasonEpisode = @"(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(.*)";
+		private static string regexSeriesSeasonEpisode = @"^(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(avi|mp3|mkv|m4v)$";
 		private static string Root { get { return ConfigurationManager.AppSettings["NASroot"]; } }
 		private static string Source { get { return ConfigurationManager.AppSettings["Source"]; } }
 
@@ -60,7 +60,6 @@ namespace net.Utility.SnORT
 				if (Regex.IsMatch (fsi.Name, regexSeriesSeasonEpisode))
 				{
 					Match m = Regex.Match (fsi.Name, regexSeriesSeasonEpisode);
-
 
 					string filename = fsi.Name;
 					string series = m.Groups[1].Captures[0].Value;
