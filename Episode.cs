@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Configuration;
 
 namespace net.Utility.SnORT
 {
@@ -22,13 +23,20 @@ namespace net.Utility.SnORT
 
 		private string hash(string filename)
 		{
+			int buffer;
+			string key = string.Empty;
+			if (!Int32.TryParse (ConfigurationManager.AppSettings ["CacheBuffer"], out buffer))
+				buffer = 1200000; // Default buffer size if config contains invalid value.
+
 			using (var md5 = MD5.Create())
 			{
-				using (var stream = File.OpenRead(filename))
+				using (var stream = new BufferedStream(File.OpenRead(filename), buffer))
 				{
-					return BitConverter.ToString (md5.ComputeHash (stream)).Replace("-","").ToLower();;
+					key = BitConverter.ToString (md5.ComputeHash (stream)).Replace("-","").ToLower();;
 				}
 			}
+
+			return key;
 		}
 
 		public void Copy(string destination)

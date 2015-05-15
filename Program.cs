@@ -11,7 +11,7 @@ namespace net.Utility.SnORT
 	/// </summary>
 	public class SnORT
 	{
-		private static string regexSeriesSeasonEpisode = @"^(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(avi|mp3|mkv|m4v)$";
+		private static string regexSeriesSeasonEpisode = @"^(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(avi|mp4|mkv|m4v)$";
 		private static string Root { get { return ConfigurationManager.AppSettings["NASroot"]; } }
 		private static string Source { get { return ConfigurationManager.AppSettings["Source"]; } }
 
@@ -41,7 +41,6 @@ namespace net.Utility.SnORT
 
 			if(!System.IO.Directory.Exists(target))
 				System.IO.Directory.CreateDirectory (target);
-
 
 			episode.Copy (destination);
 			Console.WriteLine (episode);

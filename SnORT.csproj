@@ -40,7 +40,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="GroovySrc.txt" />
     <None Include="app.config" />
   </ItemGroup>
 </Project>
