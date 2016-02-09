@@ -42,8 +42,11 @@ namespace net.Utility.SnORT
 			if(!System.IO.Directory.Exists(target))
 				System.IO.Directory.CreateDirectory (target);
 
-			episode.Copy (destination);
-			Console.WriteLine (episode);
+			if (!System.IO.Directory.Exists (destination)) {	
+				episode.Copy (destination);
+				Console.WriteLine (episode);
+			}
+			//TODO: else condition and exception logging
 		}
 
 
