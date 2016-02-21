@@ -6,3 +6,5 @@ TODO
 1. http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/
 [] Add Web API to view logging / errors
 1.http://piotrwalat.net/running-asp-net-web-api-services-under-linux-and-os-x/
+[] Refactor library into core and cli component.
+[] Place an interface on the io components so it can be mocked out for unit testing.
