@@ -3,8 +3,9 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Configuration;
+using SnORT.Core;
 
-namespace net.Utility.SnORT
+namespace SnORT.Core
 {
 	/// <summary>
 	/// SnORT is command line utility useful for organising re-named torrent media files in to the correct media folder on the NAS.

@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Configuration;
 
-namespace net.Utility.SnORT
+namespace SnORT.Core
 {
 	public class Episode
 	{
@@ -25,7 +25,8 @@ namespace net.Utility.SnORT
 		{
 			int buffer;
 			string key = string.Empty;
-			if (!Int32.TryParse (ConfigurationManager.AppSettings ["CacheBuffer"], out buffer))
+			//TOOD: Decide how the Core will get configurable settings.
+			if (!Int32.TryParse ("1200000", out buffer))
 				buffer = 1200000; // Default buffer size if config contains invalid value.
 
 			using (var md5 = MD5.Create())
