@@ -28,12 +28,35 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Autofac">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoFactory">
+      <HintPath>..\..\packages\AutoFactory.3.2.0.0\lib\net45\AutoFactory.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SnORT.Core\Properties\AssemblyInfo.cs" />
-    <Compile Include="..\SnORT.Core\Episode.cs">
-      <Link>Episode.cs</Link>
+    <Compile Include="..\SnORT.Core\MediaFactory.cs">
+      <Link>MediaFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\SnORT.Core\Entities\Episode.cs">
+      <Link>Entities\Episode.cs</Link>
+    </Compile>
+    <Compile Include="..\SnORT.Core\Services\EpisodeService.cs">
+      <Link>Services\EpisodeService.cs</Link>
+    </Compile>
+    <Compile Include="..\SnORT.Core\Services\MediaServiceBase.cs">
+      <Link>Services\MediaServiceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\SnORT.Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SnORT.Core\Entities\MediaBase.cs">
+      <Link>Entities\MediaBase.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

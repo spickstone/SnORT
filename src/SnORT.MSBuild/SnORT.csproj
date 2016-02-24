@@ -34,7 +34,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SnORT\Program.cs" />
-    <Compile Include="..\SnORT\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\SnORT\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
