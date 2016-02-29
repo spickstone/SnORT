@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnORT", "src\SnORT.MSBuild\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnORT.Core", "src\SnORT.Core.MSBuild\SnORT.Core.csproj", "{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnORT.Test", "src\SnORT.Test.MSBuild\SnORT.Test.csproj", "{BFF211EE-161D-4C3A-87F8-65380A98BFFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +19,10 @@ Global
 		{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}.Debug|x86.Build.0 = Debug|Any CPU
 		{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}.Release|x86.Build.0 = Release|Any CPU
+		{BFF211EE-161D-4C3A-87F8-65380A98BFFF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFF211EE-161D-4C3A-87F8-65380A98BFFF}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFF211EE-161D-4C3A-87F8-65380A98BFFF}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFF211EE-161D-4C3A-87F8-65380A98BFFF}.Release|x86.Build.0 = Release|Any CPU
 		{EDEF9D18-52DF-4F50-9657-6DF42E62BBAA}.Debug|x86.ActiveCfg = Debug|x86
 		{EDEF9D18-52DF-4F50-9657-6DF42E62BBAA}.Debug|x86.Build.0 = Debug|x86
 		{EDEF9D18-52DF-4F50-9657-6DF42E62BBAA}.Release|x86.ActiveCfg = Release|x86

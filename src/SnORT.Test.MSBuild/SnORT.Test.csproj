@@ -3,11 +3,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}</ProjectGuid>
+    <ProjectGuid>{BFF211EE-161D-4C3A-87F8-65380A98BFFF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SnORT.Core</RootNamespace>
-    <AssemblyName>SnORT.Core</AssemblyName>
+    <RootNamespace>SnORT.Test</RootNamespace>
+    <AssemblyName>SnORT.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\SnORT.Test\keypair.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +23,7 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -28,36 +32,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Autofac">
-      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoFactory">
-      <HintPath>..\..\packages\AutoFactory.3.2.0.0\lib\net45\AutoFactory.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\SnORT.Core\MediaFactory.cs">
-      <Link>MediaFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\SnORT.Core\Entities\Episode.cs">
-      <Link>Entities\Episode.cs</Link>
-    </Compile>
-    <Compile Include="..\SnORT.Core\Services\EpisodeService.cs">
-      <Link>Services\EpisodeService.cs</Link>
-    </Compile>
-    <Compile Include="..\SnORT.Core\Services\MediaServiceBase.cs">
-      <Link>Services\MediaServiceBase.cs</Link>
-    </Compile>
-    <Compile Include="..\SnORT.Core\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\SnORT.Core\Entities\MediaBase.cs">
-      <Link>Entities\MediaBase.cs</Link>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="..\SnORT.Test\app.config">
+      <Link>app.config</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SnORT.Test\CoreTests.cs">
+      <Link>CoreTests.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SnORT.Core.MSBuild\SnORT.Core.csproj">
+      <Project>{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}</Project>
+      <Name>SnORT.Core</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
