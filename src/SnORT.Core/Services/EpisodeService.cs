@@ -8,7 +8,6 @@ namespace SnORT.Core.Services
 {
 	public class EpisodeService : MediaServiceBase 
 	{
-		
 	}
 }
 

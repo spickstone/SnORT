@@ -10,7 +10,7 @@ namespace SnORT.Core.Services
 {
 	public interface IMediaService
 	{
-		void Move (IMedia media, string destination);
+		void Move (IMedia media);
 
 		void SortFiles (String path = null, int key = int.MinValue);
 
@@ -23,34 +23,29 @@ namespace SnORT.Core.Services
 	public abstract class MediaServiceBase : IMediaService
 	{
 
-		protected internal string episodeRegex = @"^(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(avi|mp4|mkv|m4v)$";
-		protected internal string Root { get { return ConfigurationManager.AppSettings["NASroot"]; } }
-		protected internal string Source { get { return ConfigurationManager.AppSettings["Source"]; } }
+		protected string episodeRegex = @"^(.*) - \[([0-9]+)x([0-9]+)\] - (.*)\.(avi|mp4|mkv|m4v)$";
+		protected string Root { get { return ConfigurationManager.AppSettings["NASroot"]; } }
+		protected string Source { get { return ConfigurationManager.AppSettings["Source"]; } }
 
-		private void Copy(IMedia media, string destination)
+		public virtual void Move(IMedia media)
 		{
-			File.Copy (media.FullName, destination);
-			String destHash = Hash (destination);
+			FileInfo destFile = new FileInfo (media.Target);
+
+			if(!Directory.Exists(destFile.Directory.FullName))
+				Directory.CreateDirectory (destFile.Directory.FullName);
+
+
+			File.Copy (media.FullName, media.Target, true);
+			String destHash = Hash (media.Target); // gen destination hash
+
 			if (media.Md5Hash.Equals (destHash)) {
-				Console.WriteLine (String.Format ("Created: {0} Verified MD5: {1}", destination, media.Md5Hash));
+				Console.WriteLine (String.Format ("Created: {0} Verified MD5: {1}", media.Target, media.Md5Hash));
 				Console.WriteLine (media);
 				File.Delete (media.FullName);
 			} else {
-				Console.WriteLine (String.Format ("Couldn't verify MD5 deleting {0}", destination));
-				File.Delete (destination);
+				Console.WriteLine (String.Format ("Couldn't verify MD5 deleting {0}", media.Target));
+				File.Delete (media.Target);
 			}
-		}
-
-		public virtual void Move(IMedia media, string destination)
-		{
-			FileInfo destFile = new FileInfo (destination);
-
-			if(!System.IO.Directory.Exists(destFile.Directory.FullName))
-				System.IO.Directory.CreateDirectory (destFile.Directory.FullName);
-
-			if (!System.IO.Directory.Exists (destination))	
-				Copy (media, destination);			
-			//TODO: else condition and exception logging
 		}
 
 		public String Hash(String filename)
@@ -79,7 +74,8 @@ namespace SnORT.Core.Services
 
 			DirectoryInfo folder = new DirectoryInfo(Source);
 			foreach (FileSystemInfo fsi in folder.EnumerateFileSystemInfos()) {
-				directoryMap.Add (key++, fsi.Name);
+				if(Regex.IsMatch(fsi.Name, episodeRegex))
+					directoryMap.Add (key++, fsi.Name);
 			}
 
 			return directoryMap;
@@ -88,41 +84,34 @@ namespace SnORT.Core.Services
 		public virtual void SortFiles(String path = null, int key = int.MinValue)
 		{
 			if (!Directory.Exists (Root))
-				throw new InvalidOperationException (String.Format("Could not locate NAS root: [{0}] ensure NAS is accessible and drive is mapped", Root));
+				throw new InvalidOperationException (String.Format ("Could not locate NAS root: [{0}] ensure NAS is accessible and drive is mapped", Root));
 			
 			//TODO: VAlidate source folder
 
 			if (path == null)
 				path = Source;
 
-			DirectoryInfo folder = new DirectoryInfo(path);
+
+			DirectoryInfo folder = new DirectoryInfo (path);
 			List<FileSystemInfo> listOfFiles = new List<FileSystemInfo> ();
-			listOfFiles.AddRange(folder.EnumerateFileSystemInfos ());
-			listOfFiles.ForEach(Match);
-		}			
+			if (key == int.MinValue)
+				listOfFiles.AddRange (folder.EnumerateFileSystemInfos ());
+			else {
+				List<FileSystemInfo> filter = new List<FileSystemInfo> ();
+				filter.AddRange (folder.EnumerateFileSystemInfos ());
+				listOfFiles.Add(filter[key]);
+			}
+			listOfFiles.ForEach (Match);
+		}		
 
 		private void Match(FileSystemInfo fsi)
 		{
 			// If 'folder' then sort that directory too!
 			if ((fsi.Attributes & FileAttributes.Directory) == FileAttributes.Directory) 
-			{
 				SortFiles (fsi.FullName);
-			}
 			else
-			{
 				if (Regex.IsMatch (fsi.Name, episodeRegex))
-				{
-					Match m = Regex.Match (fsi.Name, episodeRegex);
-
-					string filename = fsi.Name;
-					string series = m.Groups[1].Captures[0].Value;
-					Int32 season = Int32.Parse( m.Groups [2].Captures [0].Value);
-					var ep = new Episode (fsi, Hash(fsi.FullName), series, season);
-
-					String target = String.Format (@"{0}/{1}/Season {2}/", Root, ep.Series, ep.Season);
-					Move (ep, String.Format (@"{0}/{1}", target, ep.FullName));
-				}
-			}
+					Move (new Episode (fsi, Hash(fsi.FullName), Regex.Match (fsi.Name, episodeRegex)));
 		}
 	}
 }
