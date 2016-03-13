@@ -20,7 +20,8 @@ namespace SnORT.Core.Entities
 
 		public override string ToString ()
 		{
-			return string.Format ("[Episode: Series={0}, Season={1}, Hash={2}]", Series, Season, Md5Hash);
+			string hash = Md5Hash != null ? Md5Hash.Substring(0,6) : "[N/A]";
+			return string.Format ("[Episode: {0} - {1} #{2}]", Series, Season, hash);
 		}
 	}
 }

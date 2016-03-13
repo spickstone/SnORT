@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
+using SnORT;
 using SnORT.Core;
 using SnORT.Core.Services;
 using System.Text.RegularExpressions;
@@ -130,7 +131,7 @@ namespace SnORT.Test
 
 		private void CreateDuplicate()
 		{
-			service.SortFiles (key: 0);
+			service.SortFiles (keys: new List<int>() {0});
 			PurgeFolder (source);
 			MockSourceFolder ();
 		}
@@ -140,6 +141,102 @@ namespace SnORT.Test
 		{
 			service.SortFiles ();
 			VerifySort ();
+		}
+
+		[Test()]
+		public void cmd_VerifyVanillaSort()
+		{
+			string[] args = new string[0];
+			SnORT.Main (args);
+			VerifySort ();
+		}
+
+		[Test()]
+		public void cmd_VerifyVanillaSort_express()
+		{
+			string[] args = new string[1] {"-e"};
+			SnORT.Main (args);
+			VerifySort ();
+		}
+
+		[Test()]
+		public void cmd_VerifyMultiItemCopyWithExpress()
+		{
+			string[] args = new string[2] {"-e", "-f 0,2"};
+			SnORT.Main (args);
+
+			// Assert first item was copied (sorted) only
+			var src = new DirectoryInfo (source);
+			List<FileInfo> remaining = new List<FileInfo> ();
+			remaining.AddRange (src.EnumerateFiles ());
+
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[0])));
+		}
+
+		[Test()]
+		public void VerifySingleItemCopyWithExpress()
+		{
+			var map = service.ListFiles ();
+			// Express copy Blindspot
+			service.SortFiles (keys: new List<int>() {0}, express: true);
+
+			// Assert first item was copied (sorted) only
+			var src = new DirectoryInfo (source);
+			List<FileInfo> remaining = new List<FileInfo> ();
+			remaining.AddRange (src.EnumerateFiles ());
+
+			Assert.IsTrue (map.Count == 3);
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[0])));
+		}
+
+		[Test()]
+		public void VerifySingleItemCopy()
+		{
+			var map = service.ListFiles ();
+			// Copy Blindspot
+			service.SortFiles (keys: new List<int>() {0}, express: false);
+
+			// Assert first item was copied (sorted) only
+			var src = new DirectoryInfo (source);
+			List<FileInfo> remaining = new List<FileInfo> ();
+			remaining.AddRange (src.EnumerateFiles ());
+
+			Assert.IsTrue (map.Count == 3);
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[0])));
+		}
+
+		[Test()]
+		public void VerifyMultiItemCopyWithExpress()
+		{
+			var map = service.ListFiles ();
+			// Express copy Blindspot, and Jane the Virgin
+			service.SortFiles (keys: new List<int>() {0, 2}, express: true);
+
+			// Assert first item was copied (sorted) only
+			var src = new DirectoryInfo (source);
+			List<FileInfo> remaining = new List<FileInfo> ();
+			remaining.AddRange (src.EnumerateFiles ());
+
+			Assert.IsTrue (map.Count == 3);
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[0])));
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[3])));
+		}
+
+		[Test()]
+		public void VerifyMultiItemCopy()
+		{
+			var map = service.ListFiles ();
+			// Express copy Blindspot, and Jane the Virgin
+			service.SortFiles (keys: new List<int>() {0, 2}, express: false);
+
+			// Assert first item was copied (sorted) only
+			var src = new DirectoryInfo (source);
+			List<FileInfo> remaining = new List<FileInfo> ();
+			remaining.AddRange (src.EnumerateFiles ());
+
+			Assert.IsTrue (map.Count == 3);
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[0])));
+			Assert.IsTrue (remaining.TrueForAll(x => !x.Name.Equals(mockedFilenames[3])));
 		}
 
 		private void VerifySort()

@@ -54,5 +54,9 @@
       <Project>{4F53D9AF-84FA-4EC8-846C-1653C6B5A2EC}</Project>
       <Name>SnORT.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SnORT.MSBuild\SnORT.csproj">
+      <Project>{EDEF9D18-52DF-4F50-9657-6DF42E62BBAA}</Project>
+      <Name>SnORT</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
