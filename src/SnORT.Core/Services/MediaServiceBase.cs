@@ -44,7 +44,8 @@ namespace SnORT.Core.Services
 
 			if (media.Md5Hash == null || media.Md5Hash.Equals (destHash))
 			{
-				Console.WriteLine (String.Format ("Created: {0} Verified MD5: {1}", media.Target, media.Md5Hash));
+				string hash = media.Md5Hash != null ? media.Md5Hash.Substring(0,6) : "[N/A]";
+				Console.WriteLine (String.Format ("Created: {0} Verified MD5: {1}", media.Target, hash));
 				Console.WriteLine (media);
 				File.Delete (media.FullName);
 			}
